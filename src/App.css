@@ -1,0 +1,377 @@
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600&display=swap');
+
+/* Root Variables */
+:root {
+  --bg: #ffffff;
+  /* Soft eco-friendly background */
+  --surface: #ffffff;
+  --primary: #607D3B;
+  /* Organic green */
+  --accent: #C4A484;
+  /* Warm earthy sand */
+  --heading: #000000;
+  --text: #555542;
+  --radius: 14px;
+}
+
+/* Global Styles */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Playfair Display', serif;
+  /* font-serif */
+  color: var(--heading);
+  margin: 0 0 10px;
+}
+
+/* Button */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.75rem 5.25rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 6px 18px rgba(96, 125, 59, 0.12);
+}
+
+.btn-primary:hover {
+  background: #526e32;
+}
+
+/* Card */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Text Reveal Animation */
+@keyframes textReveal {
+  0% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(18px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* ========================= */
+/* GLOBAL SCROLL TEXT REVEAL */
+/* ========================= */
+
+.reveal {
+  opacity: 0;
+  filter: blur(12px);
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s ease-out,
+    filter 0.9s ease-out,
+    transform 0.9s ease-out;
+}
+
+.reveal-show {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+  .reveal,
+  .reveal-show {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+
+
+/* copy text color */
+/* Green selection – no animation */
+::selection {
+  background-color: #2F8F6A;
+  color: white;
+}
+
+::-moz-selection {
+  background-color: #2F8F6A;
+  color: white;
+}
+
+/* Glass shimmer on Ctrl + C */
+.glass-copy {
+  animation: glassFlash 0.5s ease-in-out;
+}
+
+@keyframes glassFlash {
+  0% {
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  50% {
+    filter: blur(2px);
+    opacity: 0.6;
+  }
+
+  100% {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+
+
+
+/* ////////////////////////////////////////////InternationalPresence////////////////////////////////////////// */
+
+
+/* Infinite marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 22s linear infinite;
+  width: max-content;
+}
+
+/* Mask fade (NO CUT) */
+.masked-slider {
+  overflow: hidden;
+
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   Apple Motion System
+   ========================= */
+
+@keyframes applePop {
+  0% {
+    opacity: 0;
+    transform: translateY(26px) scale(0.92);
+    filter: blur(8px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.03);
+    filter: blur(0);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes appleCompact {
+  from {
+    transform: translateY(6px) scale(1);
+  }
+
+  to {
+    transform: translateY(0) scale(0.96);
+  }
+}
+
+@keyframes appleClose {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.9);
+    filter: blur(6px);
+  }
+}
+
+@keyframes appleText {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Floating idle motion */
+@keyframes appleFloat {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Glass sweep */
+@keyframes glassSweep {
+  from {
+    transform: translateX(-120%);
+  }
+
+  to {
+    transform: translateX(120%);
+  }
+}
+
+/* Breathing blur */
+@keyframes breatheBlur {
+
+  0%,
+  100% {
+    backdrop-filter: blur(20px);
+  }
+
+  50% {
+    backdrop-filter: blur(26px);
+  }
+}
+
+/* Utility classes */
+.apple-enter {
+  animation: applePop 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.apple-compact {
+  animation: appleCompact 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.apple-close {
+  animation: appleClose 0.45s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.apple-text {
+  animation: appleText 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.apple-float {
+  animation: appleFloat 6s ease-in-out infinite;
+}
+
+.apple-breathe {
+  animation: breatheBlur 4s ease-in-out infinite;
+}
+
+/* Glass reflection */
+.apple-glass::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(120deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.35) 50%,
+      transparent 60%);
+  animation: glassSweep 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Grain texture */
+.apple-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+  }
+}

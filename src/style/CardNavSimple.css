@@ -1,0 +1,125 @@
+ 
+
+.cns-container {
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto;
+  position: fixed ;
+  z-index: 9999;
+  /* header up down  */
+  top: 22px;   
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* nav bar */
+.cns-nav {
+  border-radius: 12px;
+  border: 2px solid rgba(7, 151, 55, 0.181);
+  overflow: hidden;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow .2s;
+}
+
+
+
+/* top row */
+.cns-top {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  gap: 12px;
+}
+
+/* hamburger */
+.cns-hamburger {
+  width: 40px;
+  height: 36px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+.cns-hamburger span {
+  display: block;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform .25s, opacity .2s;
+}
+.cns-hamburger.is-open span:first-child {
+  transform: translateY(6px) rotate(45deg);
+}
+.cns-hamburger.is-open span:last-child {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* logo */
+.cns-logo img { height: 28px; display: block; }
+.cns-logo strong { font-size: 18px; }
+
+/* CTA */
+.cns-cta {
+  border: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* content with simple "accordion" animation via max-height */
+.cns-content {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .36s cubic-bezier(.2,.9,.3,1), opacity .24s;
+  opacity: 0;
+}
+
+/* when nav open, allow content to expand */
+.cns-nav.open .cns-content {
+  max-height: 500px; /* big enough to show content */
+  opacity: 1;
+}
+
+/* card */
+.cns-card {
+  padding: 12px 14px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* title */
+.cns-card-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* links */
+.cns-links { display:flex; flex-direction: column; gap:6px; }
+.cns-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap:8px;
+  font-size: 15px;
+  color: inherit;
+  opacity: .95;
+}
+.cns-link:hover { opacity: 0.75; transform: translateX(2px); transition: transform .15s; }
+
+/* responsive: show cards side-by-side on wider screens */
+@media (min-width: 720px) {
+  .cns-content { grid-template-columns: repeat(3, 1fr); padding: 5px; }
+  .cns-top .cns-logo { position: absolute; left: 50%; transform: translateX(-50%); }
+}
