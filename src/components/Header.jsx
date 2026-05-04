@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { GoArrowUpRight } from "react-icons/go";
+import { ShoppingCart } from "lucide-react";
 import logo from "../assets/logo.png";
+import { useCart } from "../store/CartContext";
 
 /* ================= Solutions submenu ================= */
 const solutionsLinks = [
@@ -27,6 +29,11 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { items } = useCart();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isStorePage = location.pathname.startsWith("/store");
+  const cartCount = items.length;
 
   /* ================= Scroll animation ================= */
   useEffect(() => {
@@ -79,6 +86,7 @@ export default function Header() {
         <ul className="hidden md:flex items-center gap-6 text-sm font-medium">
           <li><Link to="/" className={menuHover}>Home</Link></li>
           <li><Link to="/productpage" className={menuHover}>Products</Link></li>
+          <li><Link to="/store" className={menuHover}>Store</Link></li>
 
           {/* ================= Solutions Dropdown ================= */}
           <li className="relative group">
@@ -120,13 +128,31 @@ export default function Header() {
           <li><Link to="/About" className={menuHover}>About</Link></li>
         </ul>
 
-        {/* ================= Desktop CTA ================= */}
-        <Link
-          to="/contact"
-          className="hidden md:flex items-center gap-2 rounded-2xl bg-[#2F8F6A] text-white px-5 py-2 text-sm font-medium transition-all hover:scale-105 hover:shadow-xl"
-        >
-          Say hi <GoArrowUpRight />
-        </Link>
+        {/* ================= Cart Pill ================= */}
+        <div className="hidden md:flex items-center gap-3">
+          {(isStorePage || cartCount > 0) && (
+            <button
+              onClick={() => navigate("/store/quotation")}
+              className="relative flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:border-gray-400 hover:shadow-md"
+            >
+              <ShoppingCart size={15} />
+              <span>Quote</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#2F8F6A] text-[10px] font-bold text-white shadow">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          )}
+
+          {/* ================= Desktop CTA ================= */}
+          <Link
+            to="/contact"
+            className="flex items-center gap-2 rounded-2xl bg-[#2F8F6A] text-white px-5 py-2 text-sm font-medium transition-all hover:scale-105 hover:shadow-xl"
+          >
+            Say hi <GoArrowUpRight />
+          </Link>
+        </div>
 
         {/* ================= Mobile Toggle ================= */}
         <button
@@ -147,6 +173,7 @@ export default function Header() {
           <div className="flex flex-col gap-4 font-medium">
             <Link to="/" onClick={() => setMobileOpen(false)}>Home</Link>
             <Link to="/productpage" onClick={() => setMobileOpen(false)}>Products</Link>
+            <Link to="/store" onClick={() => setMobileOpen(false)}>Store</Link>
 
             {/* Mobile Solutions */}
             <button
@@ -178,6 +205,20 @@ export default function Header() {
             <Link to="/blog" onClick={() => setMobileOpen(false)}>Blog</Link>
             <Link to="/About" onClick={() => setMobileOpen(false)}>About</Link>
             <Link to="/contact" onClick={() => setMobileOpen(false)}>Contact</Link>
+
+            {/* Mobile Cart */}
+            {cartCount > 0 && (
+              <button
+                onClick={() => { setMobileOpen(false); navigate("/store/quotation"); }}
+                className="flex items-center gap-2 rounded-2xl border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700"
+              >
+                <ShoppingCart size={15} />
+                Quote Cart
+                <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-[#2F8F6A] text-[10px] font-bold text-white">
+                  {cartCount}
+                </span>
+              </button>
+            )}
 
             {/* Mobile CTA */}
             <Link

@@ -18,6 +18,12 @@ import RouteLoader from "./components/RouteLoader";
 // ================== AUTH ==================
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
+// ================== STORE ==================
+import { CartProvider } from "./store/CartContext.jsx";
+import StorePage from "./pages/store/StorePage.jsx";
+import QuotationPage from "./pages/store/QuotationPage.jsx";
+import PurchaseOrderPage from "./pages/store/PurchaseOrderPage.jsx";
+
 // ================== ADMIN ==================
 import Login from "./admin/Login.jsx";
 import Loginhome from "./admin/Loginhome.jsx";
@@ -123,6 +129,11 @@ function AppContent() {
           <Route path="/blog/:slug" element={<BlogSingle />} />
           <Route path="/productpage" element={<Productpage />} />
           <Route path="/shop/:slug" element={<ProductSingle />} />
+
+          {/* ================= STORE / QUOTE ================= */}
+          <Route path="/store" element={<StorePage />} />
+          <Route path="/store/quotation" element={<QuotationPage />} />
+          <Route path="/store/order" element={<PurchaseOrderPage />} />
           <Route path="/solutions/island-mode" element={<IslandMode />} />
           <Route path="/solutions/hybrid-mode" element={<HybridMode />} />
           <Route path="/solutions/microgrid-mode" element={<MicrogridMode />} />
@@ -176,8 +187,10 @@ function AppContent() {
 // ================== ROOT ==================
 export default function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <CartProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </CartProvider>
   );
 }

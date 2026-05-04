@@ -16,6 +16,7 @@ import Inquiries from "./Inquiries";
 import MediaManager from "./MediaManager";
 import ProductCategoryManager from "./ProductCategoryManager";
 import ProductManager from "./ProductManager.jsx";
+import StoreDashboard from "./StoreDashboard.jsx";
 
 export default function Loginhome() {
   const [page, setPage] = useState("dashboard");
@@ -45,23 +46,7 @@ export default function Loginhome() {
 
   const renderPage = () => {
     if (page === "dashboard") {
-      return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { title: "Testimonials", value: "24" },
-            { title: "Blogs", value: "12" },
-            { title: "Inquiries", value: "5 New" },
-          ].map((card, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl shadow p-6"
-            >
-              <h3 className="text-gray-500 text-sm">{card.title}</h3>
-              <p className="text-3xl font-bold mt-2">{card.value}</p>
-            </div>
-          ))}
-        </div>
-      );
+      return <StoreDashboard onNavigate={setPage} />;
     }
 
     if (page === "testimonials") return <Testimonials />;
