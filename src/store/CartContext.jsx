@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const CartContext = createContext(null);
 
 const STORAGE_KEY = "infinity_quote_cart";
+const LAST_QUOTE_KEY = "infinity_last_quote";
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState(() => {
@@ -14,9 +15,26 @@ export function CartProvider({ children }) {
     }
   });
 
+  const [lastQuote, setLastQuoteState] = useState(() => {
+    try {
+      const saved = localStorage.getItem(LAST_QUOTE_KEY);
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items]);
+
+  useEffect(() => {
+    if (lastQuote) {
+      localStorage.setItem(LAST_QUOTE_KEY, JSON.stringify(lastQuote));
+    } else {
+      localStorage.removeItem(LAST_QUOTE_KEY);
+    }
+  }, [lastQuote]);
 
   const addItem = (product) => {
     setItems((prev) => {
@@ -43,6 +61,9 @@ export function CartProvider({ children }) {
 
   const clearCart = () => setItems([]);
 
+  const setLastQuote = (quote) => setLastQuoteState(quote);
+  const clearLastQuote = () => setLastQuoteState(null);
+
   const totals = items.reduce(
     (acc, { product, qty }) => {
       const base = parseFloat(product.price || 0);
@@ -58,7 +79,17 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQty, clearCart, totals }}
+      value={{
+        items,
+        addItem,
+        removeItem,
+        updateQty,
+        clearCart,
+        totals,
+        lastQuote,
+        setLastQuote,
+        clearLastQuote,
+      }}
     >
       {children}
     </CartContext.Provider>

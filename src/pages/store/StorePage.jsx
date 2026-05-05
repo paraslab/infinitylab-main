@@ -71,10 +71,10 @@ export default function StorePage() {
       />
       <Header />
 
-      <main className="pt-0">
+      <main className="pt-0 px-4 md:px-4 space-y-8">
         <HeroSinglePremium
           image={heroImage}
-          title="Our Products"
+          title="Our Store"
           subtitle="Explore our full range of energy solutions."
         />
 

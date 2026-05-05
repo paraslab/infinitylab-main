@@ -130,7 +130,7 @@ export default function Header() {
 
         {/* ================= Cart Pill ================= */}
         <div className="hidden md:flex items-center gap-3">
-          {(isStorePage || cartCount > 0) && (
+          {/* {(isStorePage || cartCount > 0) && (
             <button
               onClick={() => navigate("/store/quotation")}
               className="relative flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:border-gray-400 hover:shadow-md"
@@ -143,7 +143,7 @@ export default function Header() {
                 </span>
               )}
             </button>
-          )}
+          )} */}
 
           {/* ================= Desktop CTA ================= */}
           <Link

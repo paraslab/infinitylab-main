@@ -55,7 +55,7 @@ const INITIAL_FORM = {
 };
 
 export default function QuotationPage() {
-  const { items, updateQty, removeItem, totals, clearCart } = useCart();
+  const { items, updateQty, removeItem, totals, clearCart, setLastQuote } = useCart();
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -120,11 +120,48 @@ export default function QuotationPage() {
       });
       const quote = res.data?.data || res.data;
       setSubmitted(quote);
+      setLastQuote({
+        quotation_id: quote.id,
+        quote_no: quote.quote_no,
+        customer: { ...form },
+        items: quote.items || [],
+        subtotal: quote.subtotal ?? totals.subtotal,
+        gst_total: quote.gst_total ?? totals.gstTotal,
+        grand_total: quote.grand_total ?? totals.grandTotal,
+        pdf_url: quote.pdf_url || null,
+      });
       toast.success("Quotation submitted successfully!");
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to submit quotation");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const downloadServerPDF = async () => {
+    if (!submitted?.id) {
+      toast.error("Submit the quotation first to download the official PDF.");
+      return;
+    }
+    try {
+      const res = await storeApi.get(`/v1/quotations/${submitted.id}/download`, {
+        responseType: "blob",
+      });
+      const blob = new Blob([res.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Quotation-${submitted.quote_no || submitted.id}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      if (submitted.pdf_url) {
+        window.open(submitted.pdf_url, "_blank");
+      } else {
+        toast.error("Failed to download PDF");
+      }
     }
   };
 
@@ -183,25 +220,68 @@ export default function QuotationPage() {
   };
 
   const sendWhatsApp = () => {
-    const lines = items.map(
-      ({ product, qty }) =>
-        `• ${product.name}${product.model ? " (" + product.model + ")" : ""} × ${qty}`
+    const q = submitted || {};
+    const quoteItems = q.items || items.map(({ product, qty }) => ({
+      product_name: product.name,
+      product_model: product.model || "",
+      qty,
+      unit_price: parseFloat(product.price || 0),
+      gst_percent: parseFloat(product.gst_percent || 0),
+      line_gst: (parseFloat(product.price || 0) * parseFloat(product.gst_percent || 0) / 100) * qty,
+      line_total: parseFloat(product.price || 0) * (1 + parseFloat(product.gst_percent || 0) / 100) * qty,
+    }));
+
+    const itemLines = quoteItems.map(
+      (it, i) =>
+        `${i + 1}. *${it.product_name}*${it.product_model ? ` (${it.product_model})` : ""}` +
+        `\n   Qty: ${it.qty} × ₹${fmt(it.unit_price)} | GST ${it.gst_percent}%: ₹${fmt(it.line_gst)}` +
+        `\n   Line Total: *₹${fmt(it.line_total)}*`
     );
+
+    const sub = q.subtotal ?? totals.subtotal;
+    const gst = q.gst_total ?? totals.gstTotal;
+    const grand = q.grand_total ?? totals.grandTotal;
+
     const msg = [
-      `*Quotation Request — Infinity Energy*`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `🔋 *INFINITY ENERGY*`,
+      `📄 Commercial Quotation`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━`,
       ``,
-      `*Customer:* ${form.name}`,
-      form.company ? `*Company:* ${form.company}` : "",
-      `*Email:* ${form.email}`,
-      `*Phone:* ${form.phone}`,
-      `*Address:* ${form.address}`,
+      q.quote_no ? `*Quote Ref:* ${q.quote_no}` : `*Quote Request*`,
+      `*Date:* ${new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" })}`,
+      `*Valid Until:* ${new Date(Date.now() + 30 * 86400000).toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" })}`,
       ``,
-      `*Items:*`,
-      ...lines,
+      `👤 *Customer Details*`,
+      `Name: ${form.name}`,
+      form.company ? `Company: ${form.company}` : "",
+      `Email: ${form.email}`,
+      `Phone: ${form.phone}`,
+      form.address ? `Address: ${form.address}` : "",
       ``,
-      `*Grand Total: ₹${fmt(totals.grandTotal)}* (incl. GST)`,
+      `📦 *Quoted Products*`,
+      `──────────────────────────`,
+      ...itemLines,
+      `──────────────────────────`,
+      ``,
+      `💰 *Price Summary*`,
+      `Subtotal (ex-GST): ₹${fmt(sub)}`,
+      `Total GST: ₹${fmt(gst)}`,
+      `*Grand Total: ₹${fmt(grand)}*`,
+      ``,
+      `📋 *Terms*`,
+      `• Valid for 30 days from date above`,
+      `• Delivery: 7–14 working days after PO`,
+      `• Payment: Advance as agreed`,
+      `• GST as per applicable slab rates`,
+      ``,
+      `━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `To place your order, please reply here`,
+      `or email: sales@infinityenergy.xyz`,
+      `🌐 www.infinityenergy.xyz`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━`,
     ]
-      .filter(Boolean)
+      .filter((l) => l !== undefined && l !== null)
       .join("\n");
 
     window.open(
@@ -215,7 +295,7 @@ export default function QuotationPage() {
       <>
         <Seo title="Quotation Submitted | Infinity Energy" />
         <Header />
-        <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
+        <div className="min-h-screen flex items-center justify-center px-4 pt-16 bg-gray-50">
           <div className="bg-white rounded-3xl shadow-xl p-10 text-center max-w-md w-full">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle2 className="text-green-500" size={32} />
@@ -231,7 +311,7 @@ export default function QuotationPage() {
             )}
             <div className="flex flex-col gap-3">
               <button
-                onClick={downloadPDF}
+                onClick={downloadServerPDF}
                 className="flex items-center justify-center gap-2 w-full py-3 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-gray-700 transition-colors"
               >
                 <FileDown size={16} /> Download PDF Quote
@@ -243,10 +323,7 @@ export default function QuotationPage() {
                 <MessageCircle size={16} /> Send via WhatsApp
               </button>
               <button
-                onClick={() => {
-                  clearCart();
-                  navigate("/store/order");
-                }}
+                onClick={() => navigate("/store/order")}
                 className="flex items-center justify-center gap-2 w-full py-3 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 Place Purchase Order <ArrowRight size={16} />
@@ -267,8 +344,8 @@ export default function QuotationPage() {
       />
       <Header />
 
-      <div className="min-h-screen bg-gray-50 pt-6 pb-16">
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
+      <div className="min-h-screen bg-gray-50 pt-16 pb-16">
+        <div className="max-w-6xl mx-auto px-4 pt-16 md:px-8">
           {/* Back */}
           <button
             onClick={() => navigate("/store")}
@@ -410,22 +487,22 @@ export default function QuotationPage() {
                     >
                       {submitting ? "Submitting..." : "Submit Quotation"}
                     </button>
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
+                    <div className="grid grid-cols-1 gap-2">
+                      {/* <button
                         type="button"
                         onClick={downloadPDF}
                         disabled={items.length === 0}
                         className="flex items-center justify-center gap-1.5 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-40"
                       >
                         <FileDown size={14} /> PDF
-                      </button>
+                      </button> */}
                       <button
                         type="button"
                         onClick={sendWhatsApp}
                         disabled={items.length === 0}
                         className="flex items-center justify-center gap-1.5 py-2.5 bg-green-500 text-white rounded-xl text-sm font-medium hover:bg-green-600 transition-colors disabled:opacity-40"
                       >
-                        <MessageCircle size={14} /> WhatsApp
+                        <MessageCircle size={12} /> WhatsApp
                       </button>
                     </div>
                     <button
