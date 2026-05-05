@@ -39,6 +39,7 @@ function Input({ label, name, value, onChange, error, required, type = "text", p
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        inputMode={type === "tel" ? "numeric" : undefined}
         className={`w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-colors ${
           error
             ? "border-red-400 focus:ring-red-200"
@@ -51,8 +52,10 @@ function Input({ label, name, value, onChange, error, required, type = "text", p
 }
 
 const INITIAL_FORM = {
-  name: "", company: "", email: "", phone: "", address: ""
+  name: "", company: "", email: "", wp: "", number: "", address: ""
 };
+
+const validatePhone = (value) => /^\d{10}$/.test(value);
 
 export default function QuotationPage() {
   const { items, updateQty, removeItem, totals, clearCart, setLastQuote } = useCart();
@@ -64,8 +67,28 @@ export default function QuotationPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
-    if (errors[name]) setErrors((e) => ({ ...e, [name]: "" }));
+    const nextValue = value.replace(/\s+/g, "");
+
+    setForm((f) => ({
+      ...f,
+      wp: name === "wp" || name === "number" ? nextValue : f.wp,
+      number: name === "wp" || name === "number" ? nextValue : f.number,
+      [name]: name === "wp" || name === "number" ? nextValue : value,
+    }));
+
+    if (name === "wp" || name === "number") {
+      const nextError = validatePhone(nextValue) ? "" : "Enter valid 10 digit number";
+      setErrors((prev) => {
+        if (!nextError) {
+          const { wp, number, ...rest } = prev;
+          return rest;
+        }
+        return { ...prev, wp: nextError, number: nextError };
+      });
+      return;
+    }
+
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validate = () => {
@@ -73,7 +96,8 @@ export default function QuotationPage() {
     if (!form.name.trim()) e.name = "Name is required";
     if (!form.email.trim()) e.email = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Invalid email";
-    if (!form.phone.trim()) e.phone = "Phone is required";
+    if (!validatePhone(form.wp)) e.wp = "Enter valid 10 digit number";
+    if (!validatePhone(form.number)) e.number = "Enter valid 10 digit number";
     if (!form.address.trim()) e.address = "Address is required";
     if (items.length === 0) e.cart = "Add at least one product";
     return e;
@@ -117,6 +141,7 @@ export default function QuotationPage() {
       const res = await storeApi.post("/v1/quotations", {
         session_id,
         ...form,
+        phone: form.number,
       });
       const quote = res.data?.data || res.data;
       setSubmitted(quote);
@@ -179,7 +204,7 @@ export default function QuotationPage() {
     doc.text(`Date: ${new Date().toLocaleDateString("en-IN")}`, 14, y); y += 7;
     doc.text(`To: ${form.name}`, 14, y); y += 7;
     if (form.company) { doc.text(`Company: ${form.company}`, 14, y); y += 7; }
-    doc.text(`Email: ${form.email}   Phone: ${form.phone}`, 14, y); y += 7;
+    doc.text(`Email: ${form.email}   Phone: ${form.number}`, 14, y); y += 7;
     doc.text(`Address: ${form.address}`, 14, y); y += 10;
 
     // Table header
@@ -256,7 +281,7 @@ export default function QuotationPage() {
       `Name: ${form.name}`,
       form.company ? `Company: ${form.company}` : "",
       `Email: ${form.email}`,
-      `Phone: ${form.phone}`,
+      `Phone: ${form.number}`,
       form.address ? `Address: ${form.address}` : "",
       ``,
       `📦 *Quoted Products*`,
@@ -369,7 +394,7 @@ export default function QuotationPage() {
                     <Input label="Full Name" name="name" value={form.name} onChange={handleChange} error={errors.name} required placeholder="John Doe" />
                     <Input label="Company / Organization" name="company" value={form.company} onChange={handleChange} placeholder="Your Company Ltd." />
                     <Input label="Email" name="email" type="email" value={form.email} onChange={handleChange} error={errors.email} required placeholder="john@company.com" />
-                    <Input label="Phone / WhatsApp" name="phone" type="tel" value={form.phone} onChange={handleChange} error={errors.phone} required placeholder="+91 98765 43210" />
+                    <Input label="Phone / WhatsApp" name="wp" type="tel" value={form.wp} onChange={handleChange} error={errors.wp || errors.number} required placeholder="9876543210" />
                   </div>
                   <div className="mt-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
