@@ -21,6 +21,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 // ================== STORE ==================
 import { CartProvider } from "./store/CartContext.jsx";
 import StorePage from "./pages/store/StorePage.jsx";
+import StoreProductSingle from "./pages/store/StoreProductSingle.jsx";
 import QuotationPage from "./pages/store/QuotationPage.jsx";
 import PurchaseOrderPage from "./pages/store/PurchaseOrderPage.jsx";
 
@@ -132,6 +133,7 @@ function AppContent() {
 
           {/* ================= STORE / QUOTE ================= */}
           <Route path="/store" element={<StorePage />} />
+          <Route path="/store/product/:slug" element={<StoreProductSingle />} />
           <Route path="/store/quotation" element={<QuotationPage />} />
           <Route path="/store/order" element={<PurchaseOrderPage />} />
           <Route path="/solutions/island-mode" element={<IslandMode />} />

@@ -56,9 +56,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed left-1/2 -translate-x-1/2 z-50 w-full px-4 transition-all duration-500 ${
-        scrolled ? "top-4" : "top-8"
-      }`}
+      className="fixed left-1/2 top-4 -translate-x-1/2 z-50 w-full px-4 transition-all duration-500"
     >
       {/* ================= NAV ================= */}
       <nav
