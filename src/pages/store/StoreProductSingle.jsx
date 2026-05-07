@@ -4,8 +4,8 @@ import { ArrowLeft, CheckCircle2, ChevronRight, FileText, ShoppingCart, Zap } fr
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Seo from "../../components/Seo";
-import LoadingSkeleton from "../../components/store/LoadingSkeleton";
 import EmptyState from "../../components/store/EmptyState";
+import StoreLoader from "../../components/store/StoreLoader";
 import toast from "react-hot-toast";
 import storeApi from "../../api/axiosStore";
 import { useCart } from "../../store/CartContext";
@@ -101,9 +101,9 @@ export default function StoreProductSingle() {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-[#F7FCF9] px-4 pt-36 pb-16">
-          <div className="mx-auto max-w-6xl">
-            <LoadingSkeleton count={3} />
+        <main className="min-h-screen bg-gradient-to-b from-[#F7FCF9] via-white to-white px-4 pt-32 pb-16">
+          <div className="mx-auto flex min-h-[calc(100vh-12rem)] max-w-6xl items-center justify-center">
+            <StoreLoader label="Loading store product details..." />
           </div>
         </main>
         <Footer />

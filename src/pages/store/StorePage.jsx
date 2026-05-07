@@ -6,9 +6,9 @@ import SocialFloating from "../../components/SocialFloating";
 import Seo from "../../components/Seo";
 import HeroSinglePremium from "../../components/HeroSlider.jsx";
 import StoreProductCard from "../../components/store/StoreProductCard";
-import LoadingSkeleton from "../../components/store/LoadingSkeleton";
 import EmptyState from "../../components/store/EmptyState";
 import Pagination from "../../components/store/Pagination";
+import StoreLoader from "../../components/store/StoreLoader";
 import { useCart } from "../../store/CartContext";
 import storeApi from "../../api/axiosStore";
 
@@ -419,7 +419,7 @@ export default function StorePage() {
 
               <div ref={gridRef} className="scroll-mt-28">
                 {loading ? (
-                  <LoadingSkeleton count={6} />
+                  <StoreLoader />
                 ) : visibleProducts.length === 0 ? (
                   <EmptyState
                     title="No products found"
