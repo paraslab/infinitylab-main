@@ -58,6 +58,7 @@ export default function StoreProductCard({ product, view = "grid", compact = fal
   const gstPct = Number(product.gst_percent || 0);
   const priceWithGst = price + (price * gstPct) / 100;
   const categoryName = product.store_category?.name || product.category?.name || "Store Product";
+  const productInfo = product.description || product.model || categoryName;
 
   const handleError = () => {
     setLoaded(false);
@@ -199,13 +200,13 @@ export default function StoreProductCard({ product, view = "grid", compact = fal
         )}
 
         <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
-          <div className="translate-y-1 rounded-[22px] bg-[#061D14]/82 p-3 text-white shadow-sm transition-all duration-500 group-hover:translate-y-0 group-hover:bg-[#061D14]/90">
+          <div className="translate-y-1 rounded-[22px] bg-[#061D14]/82 p-3 text-white shadow-sm transition-all duration-500 group-hover:translate-y-0 group-hover:bg-[#061D14]/92 group-focus-visible:translate-y-0 group-focus-visible:bg-[#061D14]/92 sm:group-hover:p-4 sm:group-focus-visible:p-4">
             <div className="flex items-end justify-between gap-3">
               <div className="min-w-0">
                 <p className="line-clamp-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/65">
                   {categoryName}
                 </p>
-                <p className={`mt-1 font-bold tracking-tight ${compact ? "text-sm" : "text-base sm:text-lg"}`}>
+                <p className={`mt-1 font-bold tracking-tight transition-all duration-500 group-hover:text-lg group-focus-visible:text-lg ${compact ? "text-sm" : "text-base sm:text-lg sm:group-hover:text-xl sm:group-focus-visible:text-xl"}`}>
                   {priceLabel}
                 </p>
               </div>
@@ -220,10 +221,16 @@ export default function StoreProductCard({ product, view = "grid", compact = fal
               </span>
               {!compact && (
                 <span className="hidden max-w-[52%] truncate sm:block">
-                  {product.model || product.description || categoryName}
+                  {product.model || categoryName}
                 </span>
               )}
             </div>
+
+            {!compact && (
+              <p className="mt-0 max-h-0 overflow-hidden text-[10px] leading-4 text-white/76 opacity-0 transition-all duration-500 group-hover:mt-2 group-hover:max-h-12 group-hover:opacity-100 group-focus-visible:mt-2 group-focus-visible:max-h-12 group-focus-visible:opacity-100 sm:text-xs sm:leading-5">
+                <span className="line-clamp-2">{productInfo}</span>
+              </p>
+            )}
           </div>
         </div>
       </button>
