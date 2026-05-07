@@ -171,7 +171,7 @@ export default function StoreProductCard({ product, view = "grid", compact = fal
       <button
         type="button"
         onClick={goToProduct}
-        className="group relative block aspect-square w-full overflow-hidden rounded-[28px] bg-[#F4FAF7] text-left shadow-sm ring-1 ring-[#2F8F6A]/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(6,45,29,0.18)] focus:outline-none focus:ring-2 focus:ring-[#2F8F6A]/35"
+        className="group relative block aspect-square w-full overflow-hidden rounded-[28px] bg-[#F4FAF7] text-left shadow-sm ring-1 ring-[#2F8F6A]/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(47,143,106,0.18)] hover:ring-[#2F8F6A]/20 focus:outline-none focus:ring-2 focus:ring-[#2F8F6A]/35"
         aria-label={`View ${product.name}`}
       >
         {!loaded && <div className="absolute inset-0 animate-pulse bg-gray-200" />}
@@ -200,7 +200,7 @@ export default function StoreProductCard({ product, view = "grid", compact = fal
         )}
 
         <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
-          <div className="translate-y-1 rounded-[22px] bg-[#061D14]/82 p-3 text-white shadow-sm transition-all duration-500 group-hover:translate-y-0 group-hover:bg-[#061D14]/92 group-focus-visible:translate-y-0 group-focus-visible:bg-[#061D14]/92 sm:group-hover:p-4 sm:group-focus-visible:p-4">
+          <div className="translate-y-1 rounded-[22px] bg-[#061D14]/82 p-3 text-white shadow-sm transition-all duration-500 group-hover:translate-y-0 group-hover:bg-[#0A8B41]/94 group-focus-visible:translate-y-0 group-focus-visible:bg-[#0A8B41]/94 sm:group-hover:p-4 sm:group-focus-visible:p-4">
             <div className="flex items-end justify-between gap-3">
               <div className="min-w-0">
                 <p className="line-clamp-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/65">
@@ -238,7 +238,7 @@ export default function StoreProductCard({ product, view = "grid", compact = fal
       <button
         type="button"
         onClick={handleAddToQuote}
-        className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-2xl bg-[#111714] px-4 text-xs font-bold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#2F8F6A] hover:shadow-[0_18px_36px_rgba(47,143,106,0.24)] focus:outline-none focus:ring-2 focus:ring-[#2F8F6A]/35 sm:text-sm"
+        className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-2xl bg-[#111714] px-4 text-xs font-bold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-gradient-to-r hover:from-[#2F8F6A] hover:to-[#0A8B41] hover:shadow-[0_18px_36px_rgba(47,143,106,0.28)] focus:outline-none focus:ring-2 focus:ring-[#2F8F6A]/35 sm:text-sm"
       >
         <ShoppingCart size={15} />
         {compact ? "Quote" : "Get Quote"}
