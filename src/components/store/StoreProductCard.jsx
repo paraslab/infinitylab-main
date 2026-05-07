@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { ShoppingCart, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../store/CartContext";
@@ -6,29 +6,69 @@ import toast from "react-hot-toast";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL || "https://backend.infinityenergy.xyz";
 
-function getImageUrl(product) {
-  // store_products uses image_1 / image_2 / image_3 (storage paths)
-  const img = product.image_1 || product.image_2 || product.image_3;
-  if (!img) return null;
-  if (img.startsWith("http")) return img;
-  if (img.startsWith("store-products/") || img.startsWith("storage/")) {
-    return `${BACKEND}/storage/${img.replace(/^storage\//, "")}`;
+const PLACEHOLDER =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>
+      <rect width='400' height='400' fill='#f3f4f6'/>
+      <g fill='#cbd5e1' transform='translate(200 200)'>
+        <circle r='44' cy='-18'/>
+        <path d='M-70 50 L-20 0 L20 30 L70 -10 L70 70 L-70 70 Z'/>
+      </g>
+      <text x='200' y='320' text-anchor='middle' font-family='system-ui,sans-serif' font-size='14' fill='#94a3b8' letter-spacing='2'>NO IMAGE</text>
+    </svg>`
+  );
+
+function resolveImage(path) {
+  if (!path || typeof path !== "string") return null;
+  const trimmed = path.trim();
+  if (!trimmed) return null;
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("data:")) return trimmed;
+  const cleaned = trimmed.replace(/^\/+/, "").replace(/^storage\//, "");
+  return `${BACKEND}/storage/${cleaned}`;
+}
+
+function buildImageCandidates(product) {
+  const cat = product?.store_category || product?.category || {};
+  const sources = [
+    product?.image_1,
+    product?.image_2,
+    product?.image_3,
+    cat?.image,
+  ];
+  const seen = new Set();
+  const urls = [];
+  for (const src of sources) {
+    const url = resolveImage(src);
+    if (url && !seen.has(url)) {
+      seen.add(url);
+      urls.push(url);
+    }
   }
-  return `${BACKEND}/${img}`;
+  return urls;
 }
 
 export default function StoreProductCard({ product }) {
+  const candidates = useMemo(() => buildImageCandidates(product), [product]);
+  const [idx, setIdx] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const { addItem } = useCart();
   const navigate = useNavigate();
 
-  const imgSrc =
-    getImageUrl(product) ||
-    "https://via.placeholder.com/400x400?text=No+Image";
+  const currentSrc = candidates[idx] || PLACEHOLDER;
+  const isFallback = idx >= candidates.length;
+
+  const handleError = () => {
+    setLoaded(false);
+    if (idx < candidates.length) {
+      setIdx((i) => i + 1);
+    }
+  };
 
   const price = parseFloat(product.price || 0);
   const gstPct = parseFloat(product.gst_percent || 0);
   const priceWithGst = price + (price * gstPct) / 100;
+  const categoryName = product.store_category?.name || product.category?.name;
 
   const handleAddToQuote = (e) => {
     e.preventDefault();
@@ -45,19 +85,20 @@ export default function StoreProductCard({ product }) {
           <div className="absolute inset-0 animate-pulse bg-gray-200" />
         )}
         <img
-          src={imgSrc}
+          key={currentSrc}
+          src={currentSrc}
           alt={product.name}
           loading="lazy"
           onLoad={() => setLoaded(true)}
+          onError={handleError}
           className={`w-full h-full object-contain p-4 transition-all duration-500 group-hover:scale-105 ${
             loaded ? "opacity-100" : "opacity-0"
-          }`}
+          } ${isFallback ? "opacity-70" : ""}`}
         />
 
-        {/* Category badge */}
-        {(product.store_category?.name || product.category?.name) && (
+        {categoryName && (
           <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-medium text-gray-600 px-2.5 py-1 rounded-full shadow-sm">
-            {product.store_category?.name || product.category?.name}
+            {categoryName}
           </span>
         )}
 

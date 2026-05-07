@@ -27,7 +27,7 @@ function getSessionId() {
 const fmt = (n) =>
   Number(n).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-function Input({ label, name, value, onChange, error, required, type = "text", placeholder }) {
+function Input({ label, name, value, onChange, onBlur, error, required, type = "text", placeholder, maxLength }) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -38,8 +38,10 @@ function Input({ label, name, value, onChange, error, required, type = "text", p
         name={name}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
         placeholder={placeholder}
         inputMode={type === "tel" ? "numeric" : undefined}
+        maxLength={maxLength}
         className={`w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-colors ${
           error
             ? "border-red-400 focus:ring-red-200"
@@ -67,28 +69,25 @@ export default function QuotationPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const nextValue = value.replace(/\s+/g, "");
-
-    setForm((f) => ({
-      ...f,
-      wp: name === "wp" || name === "number" ? nextValue : f.wp,
-      number: name === "wp" || name === "number" ? nextValue : f.number,
-      [name]: name === "wp" || name === "number" ? nextValue : value,
-    }));
 
     if (name === "wp" || name === "number") {
-      const nextError = validatePhone(nextValue) ? "" : "Enter valid 10 digit number";
+      const digits = value.replace(/\D/g, "").slice(0, 10);
+      setForm((f) => ({ ...f, wp: digits, number: digits }));
       setErrors((prev) => {
-        if (!nextError) {
-          const { wp, number, ...rest } = prev;
-          return rest;
-        }
-        return { ...prev, wp: nextError, number: nextError };
+        const { wp, number, ...rest } = prev;
+        return rest;
       });
       return;
     }
 
+    setForm((f) => ({ ...f, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handlePhoneBlur = () => {
+    if (form.wp && !validatePhone(form.wp)) {
+      setErrors((prev) => ({ ...prev, wp: "Enter valid 10 digit number" }));
+    }
   };
 
   const validate = () => {
@@ -394,7 +393,7 @@ export default function QuotationPage() {
                     <Input label="Full Name" name="name" value={form.name} onChange={handleChange} error={errors.name} required placeholder="John Doe" />
                     <Input label="Company / Organization" name="company" value={form.company} onChange={handleChange} placeholder="Your Company Ltd." />
                     <Input label="Email" name="email" type="email" value={form.email} onChange={handleChange} error={errors.email} required placeholder="john@company.com" />
-                    <Input label="Phone / WhatsApp" name="wp" type="tel" value={form.wp} onChange={handleChange} error={errors.wp || errors.number} required placeholder="9876543210" />
+                    <Input label="Phone / WhatsApp" name="wp" type="tel" value={form.wp} onChange={handleChange} onBlur={handlePhoneBlur} error={errors.wp || errors.number} required placeholder="9876543210" maxLength={10} />
                   </div>
                   <div className="mt-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
