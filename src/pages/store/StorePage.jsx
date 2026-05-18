@@ -34,7 +34,7 @@ function GridIcon({ columns }) {
 const VIEW_OPTIONS = [
   { value: "grid3", label: "3", columns: 3 },
   { value: "grid4", label: "4", columns: 4 },
-  { value: "grid6", label: "6", columns: 6 },
+  // { value: "grid6", label: "6", columns: 6 },
   { value: "list", label: "List", icon: List },
 ];
 
