@@ -10,6 +10,7 @@ import Reveal from '../components/Reveal.jsx';
 import ParallaxGallery from "../components/ParallaxGallery";
 import { ZoomParallax } from "../components/zoom-parallax";
 import SocialFloating from "../components/SocialFloating";
+import Seo from "../components/Seo";
 
 const heroImage = "https://backend.infinityenergy.xyz/uploads/media/about_hero.webp";
 const missionImg = "https://framerusercontent.com/images/TZYfRSkWPCYlK8Z1YU0Hpt1setk.jpg";
@@ -51,6 +52,28 @@ export default function About() {
   return (
 
     <>
+      <Seo
+        title="About Infinity Energy — Lithium Energy Storage Experts"
+        description="Infinity Energy is an India-focused lithium battery and clean energy storage company building reliable solutions for inverter, UPS, BESS, and solar applications."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Infinity Energy",
+          url: "https://www.infinityenergy.xyz",
+          logo: "https://www.infinityenergy.xyz/favicon.png",
+          description:
+            "Infinity Energy manufactures and integrates lithium battery and clean energy storage solutions for inverter, UPS, BESS, and solar applications across India.",
+          email: "Info@infinityenergy.xyz",
+          telephone: "+91-88661-89016",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Surat",
+            addressRegion: "Gujarat",
+            addressCountry: "IN",
+          },
+          sameAs: ["https://www.instagram.com/infinityenergy.xyz"],
+        }}
+      />
       <Header />
       <main className="pt-0 px-4 md:px-4 space-y-8">
         <section>

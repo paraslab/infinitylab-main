@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 
-const Seo = ({ title, description, image }) => {
+const Seo = ({ title, description, image, jsonLd }) => {
   const location = useLocation();
 
   const canonicalUrl = `https://www.infinityenergy.xyz${location.pathname}`;
@@ -29,6 +29,11 @@ const Seo = ({ title, description, image }) => {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
+
+      {/* Structured data (JSON-LD) */}
+      {jsonLd && (
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      )}
     </Helmet>
   );
 };
