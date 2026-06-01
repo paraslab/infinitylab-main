@@ -53,8 +53,20 @@ export default function Productpage() {
   return (
     <>
       <Seo
-        title="Battery Products | Infinity Energy Energy Storage Solutions"
-        description="Explore Infinity Energy’s lithium batteries, solar storage systems, and power backup solutions."
+        title="Battery & Energy Storage Products | Infinity Energy"
+        description="Explore Infinity Energy’s lithium (LFP) batteries, solar energy storage systems, and power backup solutions for homes, businesses, and industry."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: "Infinity Energy Lithium Batteries & Energy Storage Systems",
+          description:
+            "Lithium (LFP) batteries, solar energy storage, BESS, and power backup solutions for homes, businesses, and industrial applications.",
+          brand: { "@type": "Brand", name: "Infinity Energy" },
+          category: "Energy Storage Systems",
+          url: "https://www.infinityenergy.xyz/productpage",
+          image:
+            "https://backend.infinityenergy.xyz/uploads/media/producthero.webp",
+        }}
       />
 
       <Header />

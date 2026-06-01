@@ -33,6 +33,24 @@ const Home = () => {
       <Seo
         title="Infinity Energy | Advanced Battery & Clean Power Solutions"
         description="Infinity Energy delivers advanced battery systems and clean energy storage solutions for homes, businesses, and renewable power applications."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Infinity Energy",
+          url: "https://www.infinityenergy.xyz",
+          logo: "https://www.infinityenergy.xyz/favicon.png",
+          description:
+            "Infinity Energy manufactures and integrates lithium battery and clean energy storage solutions for inverter, UPS, BESS, and solar applications across India.",
+          email: "Info@infinityenergy.xyz",
+          telephone: "+91-88661-89016",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Surat",
+            addressRegion: "Gujarat",
+            addressCountry: "IN",
+          },
+          sameAs: ["https://www.instagram.com/infinityenergy.xyz"],
+        }}
       />
 
 
