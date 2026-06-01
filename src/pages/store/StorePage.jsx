@@ -15,7 +15,7 @@ import storeApi from "../../api/axiosStore";
 const PER_PAGE = 12;
 const SEARCH_DEBOUNCE_MS = 350;
 
-const heroImage = "https://backend.infinityenergy.xyz/uploads/medicfa/producthero.webp";
+const heroImage = "https://backend.infinityenergy.xyz/uploads/media/producthero.webp";
 
 function GridIcon({ columns }) {
   return (
