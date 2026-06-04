@@ -33,6 +33,26 @@ const Home = () => {
       <Seo
         title="Infinity Energy | Advanced Battery & Clean Power Solutions"
         description="Infinity Energy delivers advanced battery systems and clean energy storage solutions for homes, businesses, and renewable power applications."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Infinity Energy",
+          "url": "https://www.infinityenergy.xyz",
+          "logo": "https://www.infinityenergy.xyz/favicon.png",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88661-89016",
+            "contactType": "customer service"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Surat",
+            "addressRegion": "Gujarat",
+            "addressCountry": "IN"
+          },
+          "email": "Info@infinityenergy.xyz",
+          "sameAs": ["https://www.instagram.com/infinityenergy"]
+        }}
       />
 
 

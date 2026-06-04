@@ -6,6 +6,7 @@ import ContactInfoBar from "../components/ContactInfoBar.jsx";
 import ContactForm from "../components/ContactForm.jsx";
 import MapSection from "../components/MapSection.jsx";
 import SocialFloating from "../components/SocialFloating";
+import Seo from "../components/Seo";
 
 
 
@@ -14,6 +15,10 @@ const heroImage = "https://backend.infinityenergy.xyz/uploads/media/contact_hero
 export default function Contact() {
   return (
     <>
+      <Seo
+        title="Contact Infinity Energy - Get a Clean Power Quote"
+        description="Get in touch with Infinity Energy for clean energy storage solutions, product inquiries, and quotes."
+      />
       <Header />
 
       <main className="pt-0 px-4 md:px-4 space-y-8">

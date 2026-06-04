@@ -6,6 +6,7 @@ import RevealSection from "../components/RevealSection";
 import BlogCard from "../components/BlogCard";
 import SocialFloating from "../components/SocialFloating";
 import LayeredLoader from "../components/Loader";
+import Seo from "../components/Seo";
 
 const BASE_URL = "https://backend.infinityenergy.xyz"; // your backend
 
@@ -34,6 +35,10 @@ export default function Blog() {
 
   return (
     <>
+      <Seo
+        title="Energy Storage Blog | Insights & Articles - Infinity Energy"
+        description="Read Infinity Energy's latest articles on lithium batteries, solar storage, BESS, and clean energy solutions for homes and businesses in India."
+      />
       <Header />
 
       <main className="pt-0 px-4 md:px-4 space-y-8">

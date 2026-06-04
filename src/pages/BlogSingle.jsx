@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SocialFloating from "../components/SocialFloating";
 import LayeredLoader from "../components/Loader";
+import Seo from "../components/Seo";
 
 const BASE_URL = "https://backend.infinityenergy.xyz";
 
@@ -83,6 +84,25 @@ export default function BlogSingle() {
 
   return (
     <>
+      <Seo
+        title={`${blog.title} | Infinity Energy Blog`}
+        description={blog.short_description || "Read the latest insights from Infinity Energy."}
+        image={blog.image ? `${BASE_URL}/${blog.image}` : undefined}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": blog.title,
+          "description": blog.short_description,
+          "image": blog.image ? `${BASE_URL}/${blog.image}` : undefined,
+          "author": { "@type": "Organization", "name": "Infinity Energy" },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Infinity Energy",
+            "logo": { "@type": "ImageObject", "url": "https://www.infinityenergy.xyz/favicon.png" }
+          },
+          "url": `https://www.infinityenergy.xyz/blog/${slug}`
+        }}
+      />
       <Header />
 
       <main >

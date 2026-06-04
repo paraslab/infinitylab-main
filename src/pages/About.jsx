@@ -10,6 +10,7 @@ import Reveal from '../components/Reveal.jsx';
 import ParallaxGallery from "../components/ParallaxGallery";
 import { ZoomParallax } from "../components/zoom-parallax";
 import SocialFloating from "../components/SocialFloating";
+import Seo from "../components/Seo";
 
 const heroImage = "https://backend.infinityenergy.xyz/uploads/media/about_hero.webp";
 const missionImg = "https://framerusercontent.com/images/TZYfRSkWPCYlK8Z1YU0Hpt1setk.jpg";
@@ -51,6 +52,29 @@ export default function About() {
   return (
 
     <>
+      <Seo
+        title="About Infinity Energy - Lithium Energy Storage Experts"
+        description="Learn about Infinity Energy's mission, vision, and expertise in lithium energy storage solutions across India."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Infinity Energy",
+          "url": "https://www.infinityenergy.xyz",
+          "logo": "https://www.infinityenergy.xyz/favicon.png",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88661-89016",
+            "contactType": "customer service"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Surat",
+            "addressRegion": "Gujarat",
+            "addressCountry": "IN"
+          },
+          "email": "Info@infinityenergy.xyz"
+        }}
+      />
       <Header />
       <main className="pt-0 px-4 md:px-4 space-y-8">
         <section>

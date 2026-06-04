@@ -53,8 +53,15 @@ export default function Productpage() {
   return (
     <>
       <Seo
-        title="Battery Products | Infinity Energy Energy Storage Solutions"
+        title="Battery & Energy Storage Products | Infinity Energy"
         description="Explore Infinity Energy’s lithium batteries, solar storage systems, and power backup solutions."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Battery & Energy Storage Products",
+          "description": "Explore Infinity Energy’s lithium batteries, solar storage systems, and power backup solutions.",
+          "url": "https://www.infinityenergy.xyz/productpage"
+        }}
       />
 
       <Header />
