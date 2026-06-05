@@ -6,6 +6,7 @@ import TestingAnalysis from "../components/TestingAnalysis.jsx";
 import Advantage from "../components/Advantage.jsx";
 import TechnicalSpecs from "../components/TechnicalSpecs.jsx";
 import SocialFloating from "../components/SocialFloating.jsx";
+import Seo from "../components/Seo";
 
 const heroImage = "https://backend.infinityenergy.xyz/uploads/media/technology_hero.webp";
 
@@ -13,6 +14,10 @@ const heroImage = "https://backend.infinityenergy.xyz/uploads/media/technology_h
 export default function Contact() {
   return (
     <>
+      <Seo
+        title="Battery Technology & Energy Storage Engineering | Infinity Energy"
+        description="How Infinity Energy engineers reliable lithium battery and BESS technology — rigorous testing, analysis, and high-performance energy-storage design."
+      />
       <Header />
       <main className="pt-0 px-4 md:px-4 space-y-8">
         <section>

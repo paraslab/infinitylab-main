@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /loginhome
+Disallow: /billing
+Disallow: /store/quotation
+Disallow: /store/order
 
 Sitemap: https://www.infinityenergy.xyz/sitemap.xml

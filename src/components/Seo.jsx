@@ -30,10 +30,13 @@ const Seo = ({ title, description, image, jsonLd }) => {
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
 
-      {/* Structured data */}
-      {jsonLd && (
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      )}
+      {/* Structured data — accepts a single schema object or an array of them */}
+      {jsonLd &&
+        (Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map((node, i) => (
+          <script key={i} type="application/ld+json">
+            {JSON.stringify(node)}
+          </script>
+        ))}
     </Helmet>
   );
 };

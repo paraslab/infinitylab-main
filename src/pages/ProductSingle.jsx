@@ -7,6 +7,7 @@ import QuoteCard from "../components/QuoteCard";
 import SocialFloating from "../components/SocialFloating";
 import LayeredLoader from "../components/Loader";
 import SpecBlock from "../components/SpecBlock";
+import Seo from "../components/Seo";
 
 const BASE_URL = "https://backend.infinityenergy.xyz/";
 
@@ -179,6 +180,21 @@ export default function ProductSingle() {
 
   return (
     <>
+      <Seo
+        title={`${product.name} | Infinity Energy`}
+        description={product.short_description || product.description || `${product.name} — lithium battery & energy storage product from Infinity Energy.`}
+        image={activeImg || undefined}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: product.name,
+          description: product.short_description || product.description || undefined,
+          image: activeImg || undefined,
+          category: product.category?.name || undefined,
+          brand: { "@type": "Brand", name: "Infinity Energy" },
+          url: `https://www.infinityenergy.xyz/shop/${slug}`,
+        }}
+      />
       <Header />
 
       <QuoteCard image={activeImg} quote={product.short_description} />

@@ -10,6 +10,7 @@ import TwoColCards from "../components/TwoColInfoCards.jsx";
 import MissionCard from "../components/MissionCard.jsx";
 import FullScreenImage from "../components/FullScreenImage.jsx";
 import model from "../assets/images/model.png"
+import Seo from "../components/Seo";
 
 
 
@@ -19,6 +20,10 @@ const heroImage = "https://backend.infinityenergy.xyz/uploads/media/hybrid_hero.
 export default function Contact() {
   return (
     <>
+      <Seo
+        title="Hybrid Mode BESS — Solar, Grid & Generator Integration | Infinity Energy"
+        description="Hybrid-mode energy storage integrates grid, solar PV, and generators to boost efficiency and reliability with seamless backup power."
+      />
       <Header />
       <main className="pt-0 px-4 md:px-4 space-y-8">
         <section>
