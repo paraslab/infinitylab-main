@@ -77,6 +77,31 @@ async function fetchBlogSlugs() {
   return slugs;
 }
 
+async function fetchProductSlugs() {
+  const slugs = [];
+  let page = 1;
+  try {
+    while (true) {
+      const res = await fetch(`${API_BASE}/products?page=${page}`, {
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!res.ok) break;
+      const json = await res.json();
+      const items = json?.data?.data || json?.data || [];
+      if (!Array.isArray(items) || items.length === 0) break;
+      for (const item of items) {
+        if (item.slug) slugs.push(item.slug);
+      }
+      const lastPage = json?.data?.last_page ?? json?.last_page ?? 1;
+      if (page >= lastPage) break;
+      page++;
+    }
+  } catch (err) {
+    console.warn("  Could not fetch product list:", err.message);
+  }
+  return slugs;
+}
+
 function generateSitemap(routes) {
   const now = new Date().toISOString().split("T")[0];
   const urls = routes
@@ -91,14 +116,30 @@ async function prerender() {
     process.exit(1);
   }
 
-  const staticRoutes = ["/", "/about", "/productpage", "/contact", "/blog"];
+  const staticRoutes = [
+    "/",
+    "/about",
+    "/productpage",
+    "/contact",
+    "/blog",
+    "/Technology",
+    "/solutions/island-mode",
+    "/solutions/hybrid-mode",
+    "/solutions/microgrid-mode",
+  ];
 
   console.log("Fetching blog slugs from API...");
   const blogSlugs = await fetchBlogSlugs();
   console.log(`  Found ${blogSlugs.length} blog post(s)`);
 
   const blogRoutes = blogSlugs.map((s) => `/blog/${s}`);
-  const allRoutes = [...staticRoutes, ...blogRoutes];
+
+  console.log("Fetching product slugs from API...");
+  const productSlugs = await fetchProductSlugs();
+  console.log(`  Found ${productSlugs.length} product(s)`);
+  const productRoutes = productSlugs.map((s) => `/shop/${s}`);
+
+  const allRoutes = [...staticRoutes, ...blogRoutes, ...productRoutes];
 
   const server = await startServer();
   console.log(`Static server started on port ${PORT}`);
@@ -127,6 +168,12 @@ async function prerender() {
         let outPath;
         if (route === "/") {
           outPath = join(distDir, "index.html");
+        } else if (route === "/blog") {
+          // /blog has child /blog/<slug> pages, so write it as a directory
+          // index — otherwise the blog/ dir has no index and .htaccess (which
+          // serves directories before checking .html) would 403 on /blog.
+          if (!existsSync(join(distDir, "blog"))) mkdirSync(join(distDir, "blog"), { recursive: true });
+          outPath = join(distDir, "blog", "index.html");
         } else {
           const parts = route.replace(/^\//, "").split("/");
           if (parts.length === 1) {

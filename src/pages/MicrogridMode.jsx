@@ -10,6 +10,7 @@ import TwoColCards from "../components/TwoColInfoCards.jsx";
 import MissionCard from "../components/MissionCard.jsx";
 import FullScreenImage from "../components/FullScreenImage.jsx";
 import model from "../assets/images/model.png"
+import Seo from "../components/Seo";
 
 
 
@@ -19,6 +20,10 @@ const heroImage = "https://backend.infinityenergy.xyz/uploads/media/microgrid_he
 export default function Contact() {
   return (
     <>
+      <Seo
+        title="Microgrid Mode BESS — Resilient Local Power | Infinity Energy"
+        description="Smart microgrids with integrated BESS deliver reliable, independent power for communities and facilities, maintaining electricity during grid outages."
+      />
       <Header />
       <main className="pt-0 px-4 md:px-4 space-y-8">
         <section>

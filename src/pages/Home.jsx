@@ -33,26 +33,66 @@ const Home = () => {
       <Seo
         title="Infinity Energy | Advanced Battery & Clean Power Solutions"
         description="Infinity Energy delivers advanced battery systems and clean energy storage solutions for homes, businesses, and renewable power applications."
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Infinity Energy",
-          "url": "https://www.infinityenergy.xyz",
-          "logo": "https://www.infinityenergy.xyz/favicon.png",
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+91-88661-89016",
-            "contactType": "customer service"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Infinity Energy",
+            "url": "https://www.infinityenergy.xyz",
+            "logo": "https://www.infinityenergy.xyz/favicon.png",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+91-88661-89016",
+              "contactType": "customer service"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Surat",
+              "addressRegion": "Gujarat",
+              "addressCountry": "IN"
+            },
+            "email": "Info@infinityenergy.xyz",
+            "sameAs": ["https://www.instagram.com/infinityenergy"]
           },
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Surat",
-            "addressRegion": "Gujarat",
-            "addressCountry": "IN"
-          },
-          "email": "Info@infinityenergy.xyz",
-          "sameAs": ["https://www.instagram.com/infinityenergy"]
-        }}
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is a Battery Energy Storage System (BESS)?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A Battery Energy Storage System (BESS) is a technology that stores energy for later use. It allows energy to be captured during times of low demand or when renewable energy sources like solar or wind are abundant, and then released during peak demand or when renewable energy production is low."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How does a BESS work?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A BESS works by converting electrical energy to chemical energy for storage in batteries. When electricity is needed, the chemical energy is converted back to electrical energy. The system includes batteries, a power conversion system (inverter), and controls to manage charging and discharging cycles efficiently."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What are the benefits of using a BESS?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Benefits include energy cost savings, backup power during outages, grid stability support, peak demand reduction, integration of renewable energy sources, reduced carbon footprint, and potential revenue through energy arbitrage or grid services."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What types of batteries are used in a BESS?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Common battery technologies include lithium-ion (most popular for commercial BESS), lead-acid, flow batteries, sodium-sulfur, and emerging technologies like solid-state batteries. Each type has different characteristics in terms of energy density, cycle life, and cost."
+                }
+              }
+            ]
+          }
+        ]}
       />
 
 
